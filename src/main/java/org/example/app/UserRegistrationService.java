@@ -1,14 +1,14 @@
 package org.example.app;
 
-import org.example.infrastructure.annotation.CacheKey;
-import org.example.infrastructure.annotation.Cacheable;
 import org.example.infrastructure.annotation.Inject;
 import org.example.infrastructure.annotation.Log;
+import org.example.infrastructure.annotation.Qualifier;
 
 
 public class UserRegistrationService {
 
     @Inject
+    @Qualifier(implementationClassType = UserInMemoryRepository.class)
     private UserRepository userRepository;
 
     @Inject
