@@ -21,7 +21,7 @@ public class InjectAnnotationObjectConfigurator implements ObjectConfigurator {
                 Qualifier q = field.getAnnotation(Qualifier.class);
                 if(q != null){
                     cls = q.implementationClassType();
-                    System.out.println("Using the specified implementation: " + cls);
+                    System.out.println("@Qualifier test: Using the specified implementation: " + cls);
                 }
                 field.setAccessible(true);
                 field.set(obj, context.getObject(cls));

@@ -26,7 +26,7 @@ public class LogAnnotationProxyWrapper implements ProxyWrapper {
                                 if (!originalMethod.isAnnotationPresent(Log.class))
                                     return method.invoke(obj, args);
                                 System.out.printf(
-                                        "Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
+                                        "@Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
                                 return method.invoke(obj, args);
                             }
                         }
@@ -41,7 +41,7 @@ public class LogAnnotationProxyWrapper implements ProxyWrapper {
                             if (!originalMethod.isAnnotationPresent(Log.class))
                                 return method.invoke(obj, args);
                             System.out.printf(
-                                    "Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
+                                    "@Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
 
                             return method.invoke(obj, args);
                         }

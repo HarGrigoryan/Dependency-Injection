@@ -19,7 +19,7 @@ public class UserInMemoryRepository implements UserRepository {
     @PostConstruct
     public void secondPhaseConstructor()
     {
-        System.out.println("UserInMemoryRepository secondPhaseConstructor call");
+        System.out.println("@PostConstruct test: UserInMemoryRepository secondPhaseConstructor call");
     }
 
     @Override

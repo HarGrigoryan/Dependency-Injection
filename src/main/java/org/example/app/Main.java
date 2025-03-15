@@ -42,12 +42,12 @@ public class Main {
 
     public void propertyExperiment()
     {
-        System.out.println("Value from properties is: " + dataSourcePassword);
+        System.out.println("@Property test: Value from properties is: " + dataSourcePassword);
     }
 
     public void envExperiment()
     {
-        System.out.println("Value from environment variables with the given name is: " + DriverData);
+        System.out.println("@Env test: Value from environment variables with the given name is: " + DriverData);
     }
 
 }
