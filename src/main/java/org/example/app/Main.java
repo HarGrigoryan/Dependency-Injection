@@ -17,5 +17,14 @@ public class Main {
                         "password123"
                 )
         );
+
+
+        registrationService.register(
+                new User(
+                        "Harutyun",
+                        "harutyun@inconceptlabsc.com",
+                        "password124"
+                )
+        );
     }
 }

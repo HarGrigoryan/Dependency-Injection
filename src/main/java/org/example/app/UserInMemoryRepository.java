@@ -1,13 +1,13 @@
 package org.example.app;
 
-import org.example.infrastructure.annotation.Log;
-import org.example.infrastructure.annotation.Singleton;
+import org.example.infrastructure.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
 @Log
+@Scope
 public class UserInMemoryRepository implements UserRepository {
 
     private List<User> users = new ArrayList<>();
@@ -21,8 +21,9 @@ public class UserInMemoryRepository implements UserRepository {
         users.add(user);
     }
 
+    @Cacheable
     @Override
-    public User getUser(String username) {
+    public User getUser(@CacheKey String username) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
                 return user;

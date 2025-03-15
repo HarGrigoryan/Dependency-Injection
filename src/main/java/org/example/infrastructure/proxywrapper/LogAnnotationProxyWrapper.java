@@ -43,6 +43,7 @@ public class LogAnnotationProxyWrapper implements ProxyWrapper {
 
                         return method.invoke(obj, args);
                     }
+
                 }
         );
     }

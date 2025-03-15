@@ -3,8 +3,6 @@ package org.example.infrastructure.configreader;
 import org.reflections.Reflections;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 public class JavaObjectConfigReader implements ObjectConfigReader {

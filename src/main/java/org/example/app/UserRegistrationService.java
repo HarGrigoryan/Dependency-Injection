@@ -1,6 +1,7 @@
 package org.example.app;
 
-
+import org.example.infrastructure.annotation.CacheKey;
+import org.example.infrastructure.annotation.Cacheable;
 import org.example.infrastructure.annotation.Inject;
 import org.example.infrastructure.annotation.Log;
 
@@ -13,7 +14,9 @@ public class UserRegistrationService {
     @Inject
     private EmailSender emailSender;
 
-    public void register(User user) {
+    @Cacheable
+    public void register(@CacheKey User user) {
+        userRepository.getUser(user.getUsername()); //experiment
         User existingUser = userRepository.getUser(user.getUsername());
         if (existingUser != null) {
             throw new UserAlreadyExistsException(

@@ -2,6 +2,8 @@ package org.example.infrastructure;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.infrastructure.annotation.Scope;
+import org.example.infrastructure.annotation.ScopeType;
 import org.example.infrastructure.annotation.Singleton;
 import org.example.infrastructure.configreader.ObjectConfigReader;
 
@@ -32,7 +34,7 @@ public class ApplicationContext {
 
         T object = objectFactory.createObject(implClass);
 
-        if (implClass.isAnnotationPresent(Singleton.class)) {
+        if (implClass.isAnnotationPresent(Scope.class) && implClass.getAnnotation(Scope.class).scopeType() == ScopeType.SINGLETON) {
             singletonCache.put(implClass, object);
         }
 
