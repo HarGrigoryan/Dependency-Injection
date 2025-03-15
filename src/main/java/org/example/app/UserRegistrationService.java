@@ -5,7 +5,7 @@ import org.example.infrastructure.annotation.Cacheable;
 import org.example.infrastructure.annotation.Inject;
 import org.example.infrastructure.annotation.Log;
 
-@Log
+
 public class UserRegistrationService {
 
     @Inject
@@ -14,9 +14,8 @@ public class UserRegistrationService {
     @Inject
     private EmailSender emailSender;
 
-    @Cacheable
-    public void register(@CacheKey User user) {
-        userRepository.getUser(user.getUsername()); //experiment
+    @Log
+    public void register( User user) {
         User existingUser = userRepository.getUser(user.getUsername());
         if (existingUser != null) {
             throw new UserAlreadyExistsException(
@@ -25,7 +24,7 @@ public class UserRegistrationService {
         }
 
         userRepository.save(user);
-
+        //System.out.println("Second: " + userRepository.getUser(user.getUsername()));//Experiment
         emailSender.send(
                 user.getEmail(),
                 "Account confirmation",
