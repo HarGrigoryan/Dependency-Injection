@@ -5,9 +5,9 @@ import org.example.infrastructure.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Singleton
+
 @Log
-@Scope
+
 public class UserInMemoryRepository implements UserRepository {
 
     private List<User> users = new ArrayList<>();

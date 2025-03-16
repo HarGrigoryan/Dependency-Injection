@@ -4,7 +4,10 @@ import org.example.infrastructure.Application;
 import org.example.infrastructure.ApplicationContext;
 import org.example.infrastructure.annotation.Env;
 import org.example.infrastructure.annotation.Property;
+import org.example.infrastructure.annotation.Scope;
+import org.example.infrastructure.annotation.ScopeType;
 
+@Scope(scopeType = ScopeType.PROTOTYPE)
 public class Main {
     @Property()
     private String dataSourcePassword;//experiment

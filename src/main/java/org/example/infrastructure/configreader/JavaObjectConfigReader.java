@@ -1,5 +1,7 @@
 package org.example.infrastructure.configreader;
 
+import org.example.infrastructure.annotation.Scope;
+import org.example.infrastructure.annotation.ScopeType;
 import org.reflections.Reflections;
 
 import java.util.Collection;
@@ -32,5 +34,14 @@ public class JavaObjectConfigReader implements ObjectConfigReader {
     @Override
     public <T> Collection<Class<? extends T>> getImplClasses(Class<T> cls) {
         return reflections.getSubTypesOf(cls);
+    }
+
+    @Override
+    public <T> boolean isSingleton(Class<T> cls) {
+        Scope annotation = cls.getAnnotation(Scope.class);
+        boolean exp = annotation==null || annotation.scopeType() == ScopeType.SINGLETON;
+        if(!exp)
+            System.out.println("@Scope testing: " + cls + " is not a Singleton.");
+        return exp;
     }
 }

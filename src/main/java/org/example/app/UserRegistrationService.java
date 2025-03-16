@@ -1,10 +1,8 @@
 package org.example.app;
 
-import org.example.infrastructure.annotation.Inject;
-import org.example.infrastructure.annotation.Log;
-import org.example.infrastructure.annotation.Qualifier;
+import org.example.infrastructure.annotation.*;
 
-
+@Scope(scopeType = ScopeType.PROTOTYPE)
 public class UserRegistrationService {
 
     @Inject
