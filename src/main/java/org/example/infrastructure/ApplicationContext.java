@@ -32,7 +32,7 @@ public class ApplicationContext {
         T object = objectFactory.createObject(implClass);
 
         if (objectConfigReader.isSingleton(implClass)) {
-            System.out.println("@Scope testing: " + implClass + " is a Singleton");
+            System.out.println("@Scope testing: " + implClass + " is a Singleton.");
             singletonCache.put(implClass, object);
         }
 

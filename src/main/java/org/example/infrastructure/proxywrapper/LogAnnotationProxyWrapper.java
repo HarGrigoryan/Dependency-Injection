@@ -59,7 +59,7 @@ public class LogAnnotationProxyWrapper implements ProxyWrapper {
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                             System.out.printf(
-                                    "Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
+                                    "@Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
 
                             return method.invoke(obj, args);
                         }
@@ -73,7 +73,7 @@ public class LogAnnotationProxyWrapper implements ProxyWrapper {
                     @Override
                     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
                         System.out.printf(
-                                "Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
+                                "@Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
 
                         return method.invoke(obj, args);
                     }

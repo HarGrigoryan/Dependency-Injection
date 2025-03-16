@@ -3,6 +3,7 @@ package org.example.app;
 import org.example.infrastructure.annotation.*;
 
 @Scope(scopeType = ScopeType.PROTOTYPE)
+@Component
 public class UserRegistrationService {
 
     @Inject

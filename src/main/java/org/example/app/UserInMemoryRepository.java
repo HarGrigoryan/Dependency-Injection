@@ -7,7 +7,7 @@ import java.util.List;
 
 
 @Log
-
+@Component
 public class UserInMemoryRepository implements UserRepository {
 
     private List<User> users = new ArrayList<>();
