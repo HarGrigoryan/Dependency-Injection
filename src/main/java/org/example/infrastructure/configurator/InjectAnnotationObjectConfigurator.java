@@ -27,13 +27,5 @@ public class InjectAnnotationObjectConfigurator implements ObjectConfigurator {
                 field.set(obj, context.getObject(cls));
             }
         }
-        //@PostConstruct implementation
-        for (Method method : obj.getClass().getDeclaredMethods()) {
-            if(method.isAnnotationPresent(PostConstruct.class))
-            {
-                method.setAccessible(true);
-                method.invoke(obj, (Object[]) null);
-            }
-        }
     }
 }
