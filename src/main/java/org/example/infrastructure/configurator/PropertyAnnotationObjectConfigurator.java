@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class PropertyAnnotationObjectConfigurator implements ObjectConfigurator{
     @SneakyThrows
     @Override
@@ -21,7 +22,7 @@ public class PropertyAnnotationObjectConfigurator implements ObjectConfigurator{
             Property annotation = field.getAnnotation(Property.class);
             if(annotation != null)
             {
-                Map<String, String> properties = readProperties("C:\\Users\\Harutyun\\Desktop\\JobHunting\\InConcept Labs\\Internship\\Homework\\Lesson1\\Project\\java-dependency-injection\\resources\\application.properties");
+                Map<String, String> properties = readProperties();
                 String propertyName = annotation.propertyName();
                 if(propertyName.isEmpty())
                     propertyName = field.getName();
@@ -32,9 +33,9 @@ public class PropertyAnnotationObjectConfigurator implements ObjectConfigurator{
         }
     }
 
-    private Map<String, String> readProperties(String fileName)
+    private Map<String, String> readProperties()
     {
-        Path path = Paths.get(fileName);
+        Path path = Paths.get("resources/application.properties");
         Map<String, String> properties=null;
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             properties = new HashMap<>();

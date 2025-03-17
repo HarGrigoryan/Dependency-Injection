@@ -5,7 +5,7 @@ import org.example.infrastructure.annotation.PostConstruct;
 
 import java.lang.reflect.Method;
 
-public class PostConstructAnnotationObjectConfigurator{
+public class PostConstructAnnotationHandler {
 
     @SneakyThrows
     public void configure(Object obj) {
