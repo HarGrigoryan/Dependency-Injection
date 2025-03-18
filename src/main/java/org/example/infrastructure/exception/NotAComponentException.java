@@ -1,4 +1,4 @@
-package org.example.infrastructure;
+package org.example.infrastructure.exception;
 
 public class NotAComponentException extends RuntimeException{
     /**

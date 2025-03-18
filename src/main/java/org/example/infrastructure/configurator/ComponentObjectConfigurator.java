@@ -1,7 +1,7 @@
 package org.example.infrastructure.configurator;
 
 import org.example.infrastructure.ApplicationContext;
-import org.example.infrastructure.NotAComponentException;
+import org.example.infrastructure.exception.NotAComponentException;
 
 public class ComponentObjectConfigurator implements ObjectConfigurator{
 
