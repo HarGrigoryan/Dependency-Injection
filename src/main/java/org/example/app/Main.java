@@ -1,8 +1,11 @@
 package org.example.app;
 
+import lombok.RequiredArgsConstructor;
 import org.example.infrastructure.Application;
 import org.example.infrastructure.ApplicationContext;
 import org.example.infrastructure.annotation.*;
+
+import java.sql.Driver;
 
 @Scope(scopeType = ScopeType.PROTOTYPE)
 @Component
@@ -13,6 +16,10 @@ public class Main {
     @Env()
     private String DriverData; //experiment
 
+    @Inject
+    @Qualifier(implementationClassType = ExperimentalRepository.class)
+    private UserRepository uR;
+
     public static void main(String[] args) {
 
         ApplicationContext context = Application.run("org.example");
@@ -20,7 +27,7 @@ public class Main {
         Main m = context.getObject(Main.class);
         m.propertyExperiment();
         m.envExperiment();
-
+        m.qualifierCheck();
         UserRegistrationService registrationService = context.getObject(UserRegistrationService.class);
 
         registrationService.register(
@@ -39,6 +46,9 @@ public class Main {
                         "password124"
                 )
         );
+        //Experiment for Cacheable (classes)
+        System.out.println(m.getEnv("Test"));
+        System.out.println(m.getEnv("Test"));
     }
 
     public void propertyExperiment()
@@ -51,4 +61,14 @@ public class Main {
         System.out.println("@Env test: Value from environment variables with the given name is: " + DriverData);
     }
 
+    @Cacheable
+    public String getEnv(@CacheKey String message)
+    {
+        return message;
+    }
+
+    public void qualifierCheck()
+    {
+        System.out.println("@Qualifier test: " + uR.getClass());
+    }
 }

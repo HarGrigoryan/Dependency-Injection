@@ -5,6 +5,7 @@ import org.example.infrastructure.ApplicationContext;
 import org.example.infrastructure.annotation.Inject;
 import org.example.infrastructure.annotation.PostConstruct;
 import org.example.infrastructure.annotation.Qualifier;
+import org.example.infrastructure.exception.QualifierIsNotAssignable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -20,7 +21,11 @@ public class InjectAnnotationObjectConfigurator implements ObjectConfigurator {
                 Class<?> cls = field.getType();
                 Qualifier q = field.getAnnotation(Qualifier.class);
                 if(q != null){
-                    cls = q.implementationClassType();
+                    Class<?> typeOfQualifier = q.implementationClassType();
+                    if(context.getObjectConfigReader().isSubtype(cls, typeOfQualifier))
+                        cls = typeOfQualifier;
+                    else throw new QualifierIsNotAssignable("The specified "+ typeOfQualifier+
+                            " is not a subtype of the field's type " +cls);
                     System.out.println("@Qualifier test: Using the specified implementation: " + cls);
                 }
                 field.setAccessible(true);

@@ -7,6 +7,7 @@ import org.example.infrastructure.exception.CacheKeyNotSpecifiedException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
@@ -27,20 +28,7 @@ public class CacheableAnnotationProxyWrapper implements ProxyWrapper{
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                             Method originalMethod = cls.getMethod(method.getName(), method.getParameterTypes());
-                            if(!originalMethod.isAnnotationPresent(Cacheable.class))
-                                return method.invoke(obj, args);
-                            String key = buildKey(originalMethod.getParameterAnnotations(), method, args);
-                            if(key.length() == 0)
-                                throw new CacheKeyNotSpecifiedException("For @Cacheable to work one of the parameters must be marked with @CacheKey");
-                            if (cache.containsKey(key)) {
-                                System.out.println("@Cacheable test: Working with interfaces: Method name: " + method.getName() + ". Parameters: " + Arrays.toString(args) + ". Using the cached information.");
-                                return method.getReturnType().cast(cache.get(key));
-                            } else {
-                                Object o = method.invoke(obj, args);
-                                cache.put(key, o);
-                                System.out.println("@Cacheable test: Working with interfaces: Method name: " + method.getName() + ". Parameters: " + Arrays.toString(args) + ". Saved in cache.");
-                                return method.getReturnType().cast(o);
-                            }
+                            return cache(originalMethod, args, obj);
                         }
                     }
             );
@@ -53,7 +41,8 @@ public class CacheableAnnotationProxyWrapper implements ProxyWrapper{
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                             Method originalMethod = cls.getMethod(method.getName(), method.getParameterTypes());
-                            if(!originalMethod.isAnnotationPresent(Cacheable.class))
+                            return cache(method, args, obj);
+                            /*if(!originalMethod.isAnnotationPresent(Cacheable.class))
                                 return method.invoke(obj, args);
                             String key = buildKey(method.getParameterAnnotations(), method, args);
 
@@ -67,10 +56,27 @@ public class CacheableAnnotationProxyWrapper implements ProxyWrapper{
                                 cache.put(key, o);
                                 System.out.println("@Cacheable test: Working with classes: Method name: " + method.getName() + ". Parameters: " + Arrays.toString(args) + ". Saved in cache.");
                                 return method.getReturnType().cast(o);
-                            }
+                            }*/
                         }
                     }
             );
+        }
+    }
+
+    private <T> Object cache(Method originalMethod, Object[] args, T obj) throws IllegalAccessException, InvocationTargetException {
+        if(!originalMethod.isAnnotationPresent(Cacheable.class))
+            return originalMethod.invoke(obj, args);
+        String key = buildKey(originalMethod.getParameterAnnotations(), originalMethod, args);
+        if(key.length() == 0)
+            throw new CacheKeyNotSpecifiedException("For @Cacheable to work one of the parameters must be marked with @CacheKey");
+        if (cache.containsKey(key)) {
+            System.out.println("@Cacheable test: Working with interfaces: Method name: " + originalMethod.getName() + ". Parameters: " + Arrays.toString(args) + ". Using the cached information.");
+            return originalMethod.getReturnType().cast(cache.get(key));
+        } else {
+            Object o = originalMethod.invoke(obj, args);
+            cache.put(key, o);
+            System.out.println("@Cacheable test: Working with interfaces: Method name: " + originalMethod.getName() + ". Parameters: " + Arrays.toString(args) + ". Saved in cache.");
+            return originalMethod.getReturnType().cast(o);
         }
     }
 

@@ -1,10 +1,10 @@
 package org.example.infrastructure.proxywrapper;
 
 import net.sf.cglib.proxy.Enhancer;
-import org.example.infrastructure.annotation.Cacheable;
 import org.example.infrastructure.annotation.Log;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
@@ -23,11 +23,7 @@ public class LogAnnotationProxyWrapper implements ProxyWrapper {
                             @Override
                             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                                 Method originalMethod = cls.getMethod(method.getName(), method.getParameterTypes());
-                                if (!originalMethod.isAnnotationPresent(Log.class))
-                                    return method.invoke(obj, args);
-                                System.out.printf(
-                                        "@Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
-                                return method.invoke(obj, args);
+                                return log(method, args, originalMethod, obj, cls);
                             }
                         }
                 );
@@ -37,13 +33,7 @@ public class LogAnnotationProxyWrapper implements ProxyWrapper {
                     new net.sf.cglib.proxy.InvocationHandler() {
                         @Override
                         public Object invoke(Object o, Method method, Object[] args) throws Throwable {
-                            Method originalMethod = cls.getMethod(method.getName(), method.getParameterTypes());
-                            if (!originalMethod.isAnnotationPresent(Log.class))
-                                return method.invoke(obj, args);
-                            System.out.printf(
-                                    "@Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
-
-                            return method.invoke(obj, args);
+                            return log(method, args, method, obj, cls);
                         }
 
                     }
@@ -58,9 +48,7 @@ public class LogAnnotationProxyWrapper implements ProxyWrapper {
                     new InvocationHandler() {
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                            System.out.printf(
-                                    "@Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
-
+                            logToConsole(method, args, cls);
                             return method.invoke(obj, args);
                         }
                     }
@@ -72,13 +60,23 @@ public class LogAnnotationProxyWrapper implements ProxyWrapper {
                 new net.sf.cglib.proxy.InvocationHandler() {
                     @Override
                     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
-                        System.out.printf(
-                                "@Logging: Calling method: %s. Args: %s\n", method.getName(), Arrays.toString(args));
-
+                        logToConsole(method, args, cls);
                         return method.invoke(obj, args);
                     }
 
                 }
         );
+    }
+
+    private static <T> Object log(Method method, Object[] args, Method originalMethod, T obj, Class<T> cls) throws IllegalAccessException, InvocationTargetException {
+        if (!originalMethod.isAnnotationPresent(Log.class))
+            return method.invoke(obj, args);
+        logToConsole(method, args, cls);
+        return method.invoke(obj, args);
+    }
+
+    private static void logToConsole(Method method, Object[] args, Class<?> cls) {
+        System.out.printf(
+                "@Logging: Type: %s Calling method: %s. Args: %s\n", cls.getName(), method.getName(), Arrays.toString(args));
     }
 }

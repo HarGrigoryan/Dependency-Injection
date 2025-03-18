@@ -27,7 +27,7 @@ public class JavaObjectConfigReader implements ObjectConfigReader {
                 reflections.getSubTypesOf(cls);
 
         if (subTypesOf.size() != 1) {
-            throw new InterfaceHasMultipleImplementationsException("Interface must have only one implementation");
+            throw new InterfaceHasMultipleImplementationsException("Interface has multiple implementations.");
         }
 
         return subTypesOf.iterator().next();
@@ -50,5 +50,10 @@ public class JavaObjectConfigReader implements ObjectConfigReader {
         if(!exp)
             System.out.println("@Scope testing: " + cls + " is not a Singleton.");
         return exp;
+    }
+
+    @Override
+    public <T> boolean isSubtype(Class<T> superType, Class<?> subType) {
+        return superType.isAssignableFrom(subType);
     }
 }

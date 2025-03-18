@@ -13,5 +13,5 @@ public interface ObjectConfigReader {
 
     <T> boolean isSingleton(Class<T> cls);
 
-
+    <T> boolean isSubtype(Class<T> superType, Class<?> subType);
 }
