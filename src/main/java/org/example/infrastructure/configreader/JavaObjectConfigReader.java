@@ -3,6 +3,7 @@ package org.example.infrastructure.configreader;
 import org.example.infrastructure.annotation.Component;
 import org.example.infrastructure.annotation.Scope;
 import org.example.infrastructure.annotation.ScopeType;
+import org.example.infrastructure.exception.InterfaceHasMultipleImplementationsException;
 import org.reflections.Reflections;
 
 import java.util.Collection;
@@ -26,7 +27,7 @@ public class JavaObjectConfigReader implements ObjectConfigReader {
                 reflections.getSubTypesOf(cls);
 
         if (subTypesOf.size() != 1) {
-            throw new RuntimeException("Interface should have only one implementation");
+            throw new InterfaceHasMultipleImplementationsException("Interface must have only one implementation");
         }
 
         return subTypesOf.iterator().next();

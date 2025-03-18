@@ -3,6 +3,7 @@ package org.example.infrastructure.proxywrapper;
 import net.sf.cglib.proxy.Enhancer;
 import org.example.infrastructure.annotation.CacheKey;
 import org.example.infrastructure.annotation.Cacheable;
+import org.example.infrastructure.exception.CacheKeyNotSpecifiedException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
@@ -30,7 +31,7 @@ public class CacheableAnnotationProxyWrapper implements ProxyWrapper{
                                 return method.invoke(obj, args);
                             String key = buildKey(originalMethod.getParameterAnnotations(), method, args);
                             if(key.length() == 0)
-                                throw new RuntimeException("For @Cacheable to work one of the parameters must be marked with @CacheKey");
+                                throw new CacheKeyNotSpecifiedException("For @Cacheable to work one of the parameters must be marked with @CacheKey");
                             if (cache.containsKey(key)) {
                                 System.out.println("@Cacheable test: Working with interfaces: Method name: " + method.getName() + ". Parameters: " + Arrays.toString(args) + ". Using the cached information.");
                                 return method.getReturnType().cast(cache.get(key));
@@ -57,7 +58,7 @@ public class CacheableAnnotationProxyWrapper implements ProxyWrapper{
                             String key = buildKey(method.getParameterAnnotations(), method, args);
 
                             if (key.length() == 0)
-                                throw new RuntimeException("For @Cacheable to work one of the parameters must be marked with @CacheKey");
+                                throw new CacheKeyNotSpecifiedException("For @Cacheable to work one of the parameters must be marked with @CacheKey");
                             if (cache.containsKey(key)) {
                                 System.out.println("@Cacheable test: Working with classes: Method name: " + method.getName() + ". Parameters: " + Arrays.toString(args) + ". Using the cached information.");
                                 return method.getReturnType().cast(cache.get(key));
