@@ -3,6 +3,7 @@ package org.example.infrastructure.configurator;
 import lombok.SneakyThrows;
 import org.example.infrastructure.ApplicationContext;
 import org.example.infrastructure.annotation.Property;
+import org.example.infrastructure.exception.NoSuchKeyException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +28,8 @@ public class PropertyAnnotationObjectConfigurator implements ObjectConfigurator{
                 if(propertyName.isEmpty())
                     propertyName = field.getName();
                 String propertyValue = properties.get(propertyName);
+                if(propertyValue==null)
+                    throw new NoSuchKeyException("No value for the provided property name: " + propertyName);
                 field.setAccessible(true);
                 field.set(obj, propertyValue);
             }

@@ -1,11 +1,8 @@
 package org.example.app;
 
-import lombok.RequiredArgsConstructor;
 import org.example.infrastructure.Application;
 import org.example.infrastructure.ApplicationContext;
 import org.example.infrastructure.annotation.*;
-
-import java.sql.Driver;
 
 @Scope(scopeType = ScopeType.PROTOTYPE)
 @Component
@@ -47,8 +44,8 @@ public class Main {
                 )
         );
         //Experiment for Cacheable (classes)
-        System.out.println(m.getEnv("Test"));
-        System.out.println(m.getEnv("Test"));
+        System.out.println(m.getMessage("Test"));
+        System.out.println(m.getMessage("Test"));
     }
 
     public void propertyExperiment()
@@ -62,7 +59,7 @@ public class Main {
     }
 
     @Cacheable
-    public String getEnv(@CacheKey String message)
+    public String getMessage(@CacheKey String message)
     {
         return message;
     }
